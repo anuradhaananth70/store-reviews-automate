@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
+import matplotlib.pyplot as plt
 from google_play_scraper import app, Sort, reviews_all
 
 # Function to fetch Google Play reviews
@@ -27,25 +27,23 @@ def fetch_reviews():
     g_df2['review_date'] = pd.to_datetime(g_df2['review_date'])
     return g_df2
 
+# Function to plot bar graph
+def plot_bar_chart(data):
+    fig, ax = plt.subplots()
+    data.plot(kind='bar', ax=ax)
+    ax.set_xlabel('Rating')
+    ax.set_ylabel('Number of Reviews')
+    ax.set_title('Number of Reviews per Rating')
+    st.pyplot(fig)
+
 # Load reviews data
 reviews_data = fetch_reviews()
 
-# Function to filter reviews based on sidebar inputs
-def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword):
-    filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
-                                    (reviews_data['review_date'] >= start_date) &
-                                    (reviews_data['review_date'] <= end_date) &
-                                    (reviews_data['review_description'].str.contains(keyword, case=False))]
-    return filtered_reviews
-
-# Function to plot interactive bar graph
-def plot_interactive_bar_chart(data):
-    fig = px.bar(data, x=data.index, y='count', labels={'count': 'Number of Reviews', 'index': 'Rating'})
-    fig.update_layout(title='Number of Reviews per Rating')
-    st.plotly_chart(fig)
-
 # Streamlit UI
-st.title('Review Filter App')
+st.title('👥 App Store and Playstore Reviews - Sentiment Analysis')
+
+# Sidebar image
+st.sidebar.image('ml.png', width=150)
 
 # Sidebar filters
 st.sidebar.header('Filters')
@@ -55,16 +53,18 @@ end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-0
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Apply filters
-filtered_reviews = filter_reviews(reviews_data, min_rating, start_date, end_date, keyword)
+filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
+                                (reviews_data['review_date'] >= start_date) &
+                                (reviews_data['review_date'] <= end_date) &
+                                (reviews_data['review_description'].str.contains(keyword, case=False))]
 
 # Count number of reviews per rating
-rating_counts = filtered_reviews['rating'].value_counts().sort_index().reset_index()
-rating_counts.columns = ['rating', 'count']
+rating_counts = filtered_reviews['rating'].value_counts().sort_index()
 
 # Display filtered reviews
 st.write('Filtered Reviews:')
 with st.dataframe(filtered_reviews.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1)):
     st.write(filtered_reviews)
 
-# Plot interactive bar graph
-plot_interactive_bar_chart(rating_counts)
+# Plot bar graph
+plot_bar_chart(rating_counts)
