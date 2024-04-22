@@ -40,7 +40,7 @@ def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword):
 
 # Function to plot interactive bar graph
 def plot_interactive_bar_chart(data):
-    fig = px.bar(data, x=data.index, y='rating', labels={'rating': 'Number of Reviews', 'index': 'Rating'})
+    fig = px.bar(data, x=data.index, y='count', labels={'count': 'Number of Reviews', 'index': 'Rating'})
     fig.update_layout(title='Number of Reviews per Rating')
     st.plotly_chart(fig)
 
@@ -58,7 +58,8 @@ keyword = st.sidebar.text_input('Keyword in Review Description', '')
 filtered_reviews = filter_reviews(reviews_data, min_rating, start_date, end_date, keyword)
 
 # Count number of reviews per rating
-rating_counts = filtered_reviews['rating'].value_counts().sort_index()
+rating_counts = filtered_reviews['rating'].value_counts().sort_index().reset_index()
+rating_counts.columns = ['rating', 'count']
 
 # Display filtered reviews
 st.write('Filtered Reviews:')
@@ -66,4 +67,4 @@ with st.dataframe(filtered_reviews.style.apply(lambda x: ['background: lightblue
     st.write(filtered_reviews)
 
 # Plot interactive bar graph
-plot_interactive_bar_chart(pd.DataFrame(rating_counts))
+plot_interactive_bar_chart(rating_counts)
