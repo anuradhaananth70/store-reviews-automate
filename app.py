@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -36,7 +34,7 @@ st.title('Review Filter App')
 
 # Sidebar filters
 st.sidebar.header('Filters')
-min_rating = st.sidebar.slider('Minimum Rating', min_value=1, max_value=5, value=1)
+min_rating = st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0)
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Apply filters
@@ -45,4 +43,5 @@ filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
 
 # Display filtered reviews
 st.write('Filtered Reviews:')
-st.write(filtered_reviews)
+with st.dataframe(filtered_reviews.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1)):
+    st.write(filtered_reviews)
