@@ -1,9 +1,12 @@
+# Streamlit UI
+st.title('👥 App Store and Playstore Reviews - Sentiment Analysis')
 
-
+# Sidebar image
+st.sidebar.image('ml.png', width=150)
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
+import matplotlib.pyplot as plt
 from google_play_scraper import app, Sort, reviews_all
 
 # Function to fetch Google Play reviews
@@ -28,11 +31,7 @@ def fetch_reviews():
     g_df2['country_code'] = 'us'
     g_df2['review_date'] = pd.to_datetime(g_df2['review_date'])
     return g_df2
-# Streamlit UI
-st.title('👥 App Store and Playstore Reviews - Sentiment Analysis')
 
-# Sidebar image
-st.sidebar.image('ml.png', width=150)
 # Load reviews data
 reviews_data = fetch_reviews()
 
@@ -45,12 +44,6 @@ def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword):
         filtered_reviews = filtered_reviews[filtered_reviews['review_description'].str.contains(keyword, case=False)]
     return filtered_reviews
 
-# Function to plot interactive bar graph
-def plot_interactive_bar_chart(data):
-    fig = px.bar(data, x=data.index, y='count', labels={'count': 'Number of Reviews', 'index': 'Rating'})
-    fig.update_layout(title='Number of Reviews per Rating')
-    st.plotly_chart(fig)
-
 # Sidebar filters
 st.sidebar.header('Filters')
 min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
@@ -62,14 +55,17 @@ keyword = st.sidebar.text_input('Keyword in Review Description', '')
 filtered_reviews = filter_reviews(reviews_data, min_rating, start_date, end_date, keyword)
 
 # Count number of reviews per rating
-rating_counts = filtered_reviews['rating'].value_counts().sort_index().reset_index()
-rating_counts.columns = ['rating', 'count']
+rating_counts = filtered_reviews['rating'].value_counts().sort_index()
 
 # Display filtered reviews
 st.write('Filtered Reviews:')
 with st.dataframe(filtered_reviews.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1)):
     st.write(filtered_reviews)
 
-# Plot interactive bar graph
-plot_interactive_bar_chart(rating_counts)
-
+# Plot bar graph
+plt.figure(figsize=(8, 6))
+plt.bar(rating_counts.index, rating_counts.values, color='skyblue')
+plt.xlabel('Rating')
+plt.ylabel('Number of Reviews')
+plt.title('Number of Reviews per Rating')
+st.pyplot(plt)
