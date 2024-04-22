@@ -45,6 +45,9 @@ def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword):
         filtered_reviews = filtered_reviews[filtered_reviews['review_description'].str.contains(keyword, case=False)]
     return filtered_reviews
 
+# Streamlit UI
+st.title('Review Filter App')
+
 # Sidebar filters
 st.sidebar.header('Filters')
 min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
@@ -57,6 +60,9 @@ filtered_reviews = filter_reviews(reviews_data, min_rating, start_date, end_date
 
 # Count number of reviews per rating
 rating_counts = filtered_reviews['rating'].value_counts().sort_index()
+
+# Ensure that all ratings are present, even if there are no reviews for them
+rating_counts = rating_counts.reindex(range(1, 6), fill_value=0)
 
 # Display filtered reviews
 st.write('Filtered Reviews:')
