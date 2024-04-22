@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from google_play_scraper import app, Sort, reviews_all
 
 # Function to fetch Google Play reviews
@@ -26,14 +27,20 @@ def fetch_reviews():
     g_df2['review_date'] = pd.to_datetime(g_df2['review_date'])
     return g_df2
 
+# Function to plot bar graph
+def plot_bar_chart(data):
+    fig, ax = plt.subplots()
+    data.plot(kind='bar', ax=ax)
+    ax.set_xlabel('Rating')
+    ax.set_ylabel('Number of Reviews')
+    ax.set_title('Number of Reviews per Rating')
+    st.pyplot(fig)
+
 # Load reviews data
 reviews_data = fetch_reviews()
 
 # Streamlit UI
-st.title('👥 App Store and Playstore Reviews - Sentiment Analysis')
-
-# Sidebar image
-st.sidebar.image('ml.png', width=150)
+st.title('Review Filter App')
 
 # Sidebar filters
 st.sidebar.header('Filters')
@@ -43,12 +50,18 @@ end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-0
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Apply filters
-filtered_reviews = reviews_data[(reviews_data['rating'] == min_rating) &
+filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
                                 (reviews_data['review_date'] >= start_date) &
                                 (reviews_data['review_date'] <= end_date) &
                                 (reviews_data['review_description'].str.contains(keyword, case=False))]
+
+# Count number of reviews per rating
+rating_counts = filtered_reviews['rating'].value_counts().sort_index()
 
 # Display filtered reviews
 st.write('Filtered Reviews:')
 with st.dataframe(filtered_reviews.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1)):
     st.write(filtered_reviews)
+
+# Plot bar graph
+plot_bar_chart(rating_counts)
