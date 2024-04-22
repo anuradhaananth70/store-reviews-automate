@@ -4,3 +4,8 @@ numpy
 google-play-scraper
 matplotlib
 plotly
+pandas
+streamlit
+yfinance
+pandas-datareader
+prophet
