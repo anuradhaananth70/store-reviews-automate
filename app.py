@@ -30,7 +30,7 @@ def fetch_reviews():
 reviews_data = fetch_reviews()
 
 # Streamlit UI
-st.title('Review Filter App')
+st.title('👥 Review Filter App')
 
 # Sidebar filters
 st.sidebar.header('Filters')
