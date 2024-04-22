@@ -63,9 +63,11 @@ rating_counts = rating_counts.reindex(range(1, 6), fill_value=0)
 
 # Display filtered reviews
 # Display filtered reviews with increased table length
+# Display filtered reviews with increased table width
 st.write('Filtered Reviews:')
-with st.dataframe(filtered_reviews.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1), height=800):
+with st.dataframe(filtered_reviews.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1), height=800, width=1000):
     st.write(filtered_reviews)
+
 
 
 # Plot bar graph
