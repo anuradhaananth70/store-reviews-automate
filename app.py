@@ -30,15 +30,19 @@ def fetch_reviews():
 reviews_data = fetch_reviews()
 
 # Streamlit UI
-st.title('👥 Playstore and App Store Review - Sentiment Analysis')
+st.title('Review Filter App')
 
 # Sidebar filters
 st.sidebar.header('Filters')
-min_rating = st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0)
+min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
+start_date = st.sidebar.date_input('Start Date', pd.to_datetime('2024-04-01'))
+end_date = st.sidebar.date_input('End Date', pd.to_datetime('2024-04-22'))
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Apply filters
 filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
+                                (reviews_data['review_date'] >= start_date) &
+                                (reviews_data['review_date'] <= end_date) &
                                 (reviews_data['review_description'].str.contains(keyword, case=False))]
 
 # Display filtered reviews
