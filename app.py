@@ -30,7 +30,10 @@ def fetch_reviews():
 reviews_data = fetch_reviews()
 
 # Streamlit UI
-st.title('Review Filter App')
+st.title('👥 App Store and Playstore Reviews - Sentiment Analysis')
+
+# Sidebar image
+st.sidebar.image('ml.png', width=150)
 
 # Sidebar filters
 st.sidebar.header('Filters')
