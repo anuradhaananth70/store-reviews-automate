@@ -40,7 +40,7 @@ end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-0
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Apply filters
-filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
+filtered_reviews = reviews_data[(reviews_data['rating'] == min_rating) &
                                 (reviews_data['review_date'] >= start_date) &
                                 (reviews_data['review_date'] <= end_date) &
                                 (reviews_data['review_description'].str.contains(keyword, case=False))]
