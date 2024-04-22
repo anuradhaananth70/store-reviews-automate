@@ -1,3 +1,7 @@
+#title of the app
+# Add an image to the top left corner of the sidebar
+st.sidebar.image("photos/ml.png", width=150)  # Adjust the width as needed
+
 import streamlit as st
 import pandas as pd
 import numpy as np
