@@ -1,13 +1,14 @@
-# Streamlit UI
-st.title('👥 App Store and Playstore Reviews - Sentiment Analysis')
-
-# Sidebar image
-st.sidebar.image('ml.png', width=150)
 import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from google_play_scraper import app, Sort, reviews_all
+
+# Streamlit UI
+st.title('👥 App Store and Playstore Reviews - Sentiment Analysis')
+
+# Sidebar image
+st.sidebar.image('ml.png', width=150)
 
 # Function to fetch Google Play reviews
 def fetch_reviews():
