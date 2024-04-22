@@ -1,12 +1,12 @@
-#title of the app
-# Add an image to the top left corner of the sidebar
-st.sidebar.image("photos/ml.png", width=150)  # Adjust the width as needed
+
 
 import streamlit as st
 import pandas as pd
 import numpy as np
 from google_play_scraper import app, Sort, reviews_all
-
+#title of the app
+# Add an image to the top left corner of the sidebar
+st.sidebar.image("photos/ml.png", width=150)  # Adjust the width as needed
 # Function to fetch Google Play reviews
 def fetch_reviews():
     g_reviews = reviews_all(
