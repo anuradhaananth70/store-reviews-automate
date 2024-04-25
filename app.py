@@ -49,7 +49,7 @@ def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword):
 st.sidebar.header('Filters')
 min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
 start_date = pd.Timestamp(st.sidebar.date_input('Start Date', pd.to_datetime('2024-04-01')))
-end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-04-22')))
+end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-04-25')))
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Apply filters
