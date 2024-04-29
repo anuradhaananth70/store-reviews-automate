@@ -52,8 +52,6 @@ def fetch_apple_reviews():
 # Sidebar filters
 st.sidebar.header('Filters')
 min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
-start_date = pd.Timestamp(st.sidebar.date_input('Start Date', pd.to_datetime('2024-04-01')))
-end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-05-31')))
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Load reviews data
@@ -64,16 +62,14 @@ reviews_data2 = fetch_apple_reviews()
 all_reviews_data = pd.concat([reviews_data1, reviews_data2], ignore_index=True)
 
 # Function to filter reviews based on sidebar inputs
-def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword):
-    filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
-                                    (reviews_data['review_date'] >= start_date) &
-                                    (reviews_data['review_date'] <= end_date)]
+def filter_reviews(reviews_data, min_rating, keyword):
+    filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating)]
     if keyword:
         filtered_reviews = filtered_reviews[filtered_reviews['review_description'].str.contains(keyword, case=False)]
     return filtered_reviews
 
 # Apply filters
-filtered_reviews = filter_reviews(all_reviews_data, min_rating, start_date, end_date, keyword)
+filtered_reviews = filter_reviews(all_reviews_data, min_rating, keyword)
 
 # Separate the filtered reviews for Google Play Store and App Store
 filtered_reviews1 = filtered_reviews[filtered_reviews['source'] == 'Google Play']
