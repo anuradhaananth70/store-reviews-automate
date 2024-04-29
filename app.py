@@ -59,50 +59,46 @@ st.sidebar.header('App Store Filters')
 as_min_rating = st.sidebar.selectbox('Minimum Rating (App Store)', [1, 2, 3, 4, 5], index=0, key='as_min_rating')
 as_keyword = st.sidebar.text_input('Keyword in Review Description (App Store)', key='as_keyword')
 
-try:
-    # Load reviews data
-    reviews_data1 = fetch_google_reviews()
-    reviews_data2 = fetch_apple_reviews()
+# Load reviews data
+reviews_data1 = fetch_google_reviews()
+reviews_data2 = fetch_apple_reviews()
 
-    # Concatenate the review dataframes and reset index
-    all_reviews_data = pd.concat([reviews_data1, reviews_data2], ignore_index=True)
+# Concatenate the review dataframes and reset index
+all_reviews_data = pd.concat([reviews_data1, reviews_data2], ignore_index=True)
 
-    # Function to filter reviews based on sidebar inputs
-    def filter_reviews(reviews_data, min_rating, keyword):
-        filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating)]
-        if keyword:
-            filtered_reviews = filtered_reviews[filtered_reviews['review_description'].str.contains(keyword, case=False)]
-        return filtered_reviews
+# Function to filter reviews based on sidebar inputs
+def filter_reviews(reviews_data, min_rating, keyword):
+    filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating)]
+    if keyword:
+        filtered_reviews = filtered_reviews[filtered_reviews['review_description'].str.contains(keyword, case=False)]
+    return filtered_reviews
 
-    # Apply filters
-    filtered_reviews1 = filter_reviews(reviews_data1, gp_min_rating, gp_keyword)
-    filtered_reviews2 = filter_reviews(reviews_data2, as_min_rating, as_keyword)
+# Apply filters
+filtered_reviews1 = filter_reviews(reviews_data1, gp_min_rating, gp_keyword)
+filtered_reviews2 = filter_reviews(reviews_data2, as_min_rating, as_keyword)
 
-    # Display filtered Google Play Store reviews
-    st.write('Google Play Store Reviews:')
-    with st.dataframe(filtered_reviews1.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1), height=800, width=1000):
-        st.write(filtered_reviews1)
+# Display filtered Google Play Store reviews
+st.write('Google Play Store Reviews:')
+with st.dataframe(filtered_reviews1.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1), height=800, width=1000):
+    st.write(filtered_reviews1)
 
-    # Display filtered App Store reviews
-    st.write('App Store Reviews:')
-    with st.dataframe(filtered_reviews2.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1), height=800, width=1000):
-        st.write(filtered_reviews2)
+# Display filtered App Store reviews
+st.write('App Store Reviews:')
+with st.dataframe(filtered_reviews2.style.apply(lambda x: ['background: lightblue' if x.name % 2 == 0 else 'background: lightgrey' for i in x], axis=1), height=800, width=1000):
+    st.write(filtered_reviews2)
 
-    # Plot bar graph for Google Play Store reviews
-    plt.figure(figsize=(8, 6))
-    plt.bar(filtered_reviews1['rating'].value_counts().index, filtered_reviews1['rating'].value_counts().values, color='skyblue')
-    plt.xlabel('Rating')
-    plt.ylabel('Number of Reviews')
-    plt.title('Number of Reviews per Rating (Google Play Store)')
-    st.pyplot(plt)
+# Plot bar graph for Google Play Store reviews
+plt.figure(figsize=(8, 6))
+plt.bar(filtered_reviews1['rating'].value_counts().index, filtered_reviews1['rating'].value_counts().values, color='skyblue')
+plt.xlabel('Rating')
+plt.ylabel('Number of Reviews')
+plt.title('Number of Reviews per Rating (Google Play Store)')
+st.pyplot(plt)
 
-    # Plot bar graph for App Store reviews
-    plt.figure(figsize=(8, 6))
-    plt.bar(filtered_reviews2['rating'].value_counts().index, filtered_reviews2['rating'].value_counts().values, color='skyblue')
-    plt.xlabel('Rating')
-    plt.ylabel('Number of Reviews')
-    plt.title('Number of Reviews per Rating (App Store)')
-    st.pyplot(plt)
-
-except Exception as e:
-    st.error(f"An error occurred: {e}")
+# Plot bar graph for App Store reviews
+plt.figure(figsize=(8, 6))
+plt.bar(filtered_reviews2['rating'].value_counts().index, filtered_reviews2['rating'].value_counts().values, color='skyblue')
+plt.xlabel('Rating')
+plt.ylabel('Number of Reviews')
+plt.title('Number of Reviews per Rating (App Store)')
+st.pyplot(plt)
