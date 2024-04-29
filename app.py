@@ -45,6 +45,7 @@ def fetch_apple_reviews():
     a_df2['language_code'] = 'en'
     a_df2['country_code'] = 'us'
     a_df2.insert(loc=1, column='review_id', value=[uuid.uuid4() for _ in range(len(a_df2.index))])
+    a_df2['review_date'] = pd.to_datetime(a_df2['date'])  # Use 'date' column as 'review_date'
     a_df2 = a_df2.where(pd.notnull(a_df2), None)
     return a_df2
 
@@ -59,6 +60,9 @@ keyword = st.sidebar.text_input('Keyword in Review Description', '')
 reviews_data1 = fetch_google_reviews()
 reviews_data2 = fetch_apple_reviews()
 
+# Concatenate the review dataframes and reset index
+all_reviews_data = pd.concat([reviews_data1, reviews_data2], ignore_index=True)
+
 # Function to filter reviews based on sidebar inputs
 def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword):
     filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
@@ -68,11 +72,12 @@ def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword):
         filtered_reviews = filtered_reviews[filtered_reviews['review_description'].str.contains(keyword, case=False)]
     return filtered_reviews
 
-# Apply filters for Google Play Store reviews
-filtered_reviews1 = filter_reviews(reviews_data1, min_rating, start_date, end_date, keyword)
+# Apply filters
+filtered_reviews = filter_reviews(all_reviews_data, min_rating, start_date, end_date, keyword)
 
-# Apply filters for App Store reviews
-filtered_reviews2 = filter_reviews(reviews_data2, min_rating, start_date, end_date, keyword)
+# Separate the filtered reviews for Google Play Store and App Store
+filtered_reviews1 = filtered_reviews[filtered_reviews['source'] == 'Google Play']
+filtered_reviews2 = filtered_reviews[filtered_reviews['source'] == 'App Store']
 
 # Display filtered Google Play Store reviews
 st.write('Google Play Store Reviews:')
