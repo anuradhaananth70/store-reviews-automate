@@ -37,28 +37,28 @@ def fetch_reviews():
 reviews_data = fetch_reviews()
 
 # Function to filter reviews based on sidebar inputs
-def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword, excluded_rating=None):
+def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword, included_rating=None):
     filtered_reviews = reviews_data[(reviews_data['rating'] >= min_rating) &
                                     (reviews_data['review_date'] >= start_date) &
                                     (reviews_data['review_date'] <= end_date)]
     if keyword:
         filtered_reviews = filtered_reviews[filtered_reviews['review_description'].str.contains(keyword, case=False)]
-    if excluded_rating is not None:
-        filtered_reviews = filtered_reviews[filtered_reviews['rating'] != excluded_rating]
+    if included_rating is not None:
+        filtered_reviews = filtered_reviews[filtered_reviews['rating'] == included_rating]
     return filtered_reviews
 
 # Sidebar filters
 st.sidebar.header('Filters')
 min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
-excluded_rating = None  # Initialize excluded rating
-if st.sidebar.checkbox('Exclude Selected Rating'):
-    excluded_rating = int(st.sidebar.selectbox('Exclude Rating', [1, 2, 3, 4, 5], index=0))
+included_rating = None  # Initialize included rating
+if st.sidebar.checkbox('Include Selected Rating'):
+    included_rating = int(st.sidebar.selectbox('Include Rating', [1, 2, 3, 4, 5], index=0))
 start_date = pd.Timestamp(st.sidebar.date_input('Start Date', pd.to_datetime('2024-04-01')))
 end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-04-25')))
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Apply filters
-filtered_reviews = filter_reviews(reviews_data, min_rating, start_date, end_date, keyword, excluded_rating)
+filtered_reviews = filter_reviews(reviews_data, min_rating, start_date, end_date, keyword, included_rating)
 
 # Count number of reviews per rating
 rating_counts = filtered_reviews['rating'].value_counts().sort_index()
