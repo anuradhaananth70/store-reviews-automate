@@ -54,7 +54,7 @@ included_rating = None  # Initialize included rating
 if st.sidebar.checkbox('Include Selected Rating'):
     included_rating = int(st.sidebar.selectbox('Include Rating', [1, 2, 3, 4, 5], index=0))
 start_date = pd.Timestamp(st.sidebar.date_input('Start Date', pd.to_datetime('2024-04-01')))
-end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-04-25')))
+end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-05-31')))
 keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Apply filters
