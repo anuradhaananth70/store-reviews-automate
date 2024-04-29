@@ -66,23 +66,23 @@ def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword, incl
 
 # Sidebar filters for Google Play Store reviews
 st.sidebar.header('Google Play Store Filters')
-gp_min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
+gp_min_rating = int(st.sidebar.selectbox('Google_Play_Minimum_Rating', [1, 2, 3, 4, 5], index=0))
 gp_included_rating = None  # Initialize included rating
-if st.sidebar.checkbox('Include Selected Rating'):
-    gp_included_rating = int(st.sidebar.selectbox('Include Rating', [1, 2, 3, 4, 5], index=0))
-gp_start_date = pd.Timestamp(st.sidebar.date_input('Start Date', pd.to_datetime('2024-04-01')))
-gp_end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-04-25')))
-gp_keyword = st.sidebar.text_input('Keyword in Review Description', '')
+if st.sidebar.checkbox('Google_Play_Include_Selected_Rating'):
+    gp_included_rating = int(st.sidebar.selectbox('Google_Play_Include_Rating', [1, 2, 3, 4, 5], index=0))
+gp_start_date = pd.Timestamp(st.sidebar.date_input('Google_Play_Start_Date', pd.to_datetime('2024-04-01')))
+gp_end_date = pd.Timestamp(st.sidebar.date_input('Google_Play_End_Date', pd.to_datetime('2024-04-25')))
+gp_keyword = st.sidebar.text_input('Google_Play_Keyword_in_Review_Description', '')
 
 # Sidebar filters for App Store reviews
 st.sidebar.header('App Store Filters')
-as_min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
+as_min_rating = int(st.sidebar.selectbox('App_Store_Minimum_Rating', [1, 2, 3, 4, 5], index=0))
 as_included_rating = None  # Initialize included rating
-if st.sidebar.checkbox('Include Selected Rating'):
-    as_included_rating = int(st.sidebar.selectbox('Include Rating', [1, 2, 3, 4, 5], index=0))
-as_start_date = pd.Timestamp(st.sidebar.date_input('Start Date', pd.to_datetime('2024-04-01')))
-as_end_date = pd.Timestamp(st.sidebar.date_input('End Date', pd.to_datetime('2024-04-25')))
-as_keyword = st.sidebar.text_input('Keyword in Review Description', '')
+if st.sidebar.checkbox('App_Store_Include_Selected_Rating'):
+    as_included_rating = int(st.sidebar.selectbox('App_Store_Include_Rating', [1, 2, 3, 4, 5], index=0))
+as_start_date = pd.Timestamp(st.sidebar.date_input('App_Store_Start_Date', pd.to_datetime('2024-04-01')))
+as_end_date = pd.Timestamp(st.sidebar.date_input('App_Store_End_Date', pd.to_datetime('2024-04-25')))
+as_keyword = st.sidebar.text_input('App_Store_Keyword_in_Review_Description', '')
 
 # Load reviews data
 google_play_reviews_data = fetch_google_play_reviews()
