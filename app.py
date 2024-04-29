@@ -42,7 +42,7 @@ def fetch_app_store_reviews():
     a_df2['laguage_code'] = 'en'
     a_df2['country_code'] = 'us'
     a_df2.insert(loc=1, column='review_id', value=[uuid.uuid4() for _ in range(len(a_df2.index))])
-    a_df2.rename(columns={'review': 'review_description', 'userName': 'user_name', 'date': '_date',
+    a_df2.rename(columns={'review': 'review_description', 'userName': 'user_name', 'date': 'review_date',
                           'title': 'review_title', 'developerResponse': 'developer_response'}, inplace=True)
     a_df2 = a_df2.where(pd.notnull(a_df2), None)
     return a_df2
@@ -66,10 +66,11 @@ def filter_reviews(reviews_data, min_rating, start_date, end_date, keyword, incl
 
 # Sidebar filters for Google Play Store reviews
 st.sidebar.header('Google Play Store Filters')
-gp_min_rating = int(st.sidebar.selectbox('Google_Play_Minimum_Rating', [1, 2, 3, 4, 5], index=0))
-gp_included_rating = None  # Initialize included rating
+## gp_min_rating = int(st.sidebar.selectbox('Google_Play_Minimum_Rating', [1, 2, 3, 4, 5], index=0))
+
 if st.sidebar.checkbox('Google_Play_Include_Selected_Rating'):
     gp_included_rating = int(st.sidebar.selectbox('Google_Play_Include_Rating', [1, 2, 3, 4, 5], index=0))
+    gp_included_rating = None  # Initialize included rating
 gp_start_date = pd.Timestamp(st.sidebar.date_input('Google_Play_Start_Date', pd.to_datetime('2024-04-01')))
 gp_end_date = pd.Timestamp(st.sidebar.date_input('Google_Play_End_Date', pd.to_datetime('2024-04-25')))
 gp_keyword = st.sidebar.text_input('Google_Play_Keyword_in_Review_Description', '')
