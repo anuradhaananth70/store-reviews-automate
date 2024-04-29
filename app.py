@@ -90,7 +90,7 @@ google_play_reviews_data = fetch_google_play_reviews()
 app_store_reviews_data = fetch_app_store_reviews()
 
 # Apply filters for Google Play Store reviews
-filtered_google_play_reviews = filter_reviews(google_play_reviews_data, gp_min_rating, gp_start_date, gp_end_date, gp_keyword, gp_included_rating)
+filtered_google_play_reviews = filter_reviews(google_play_reviews_data, gp_start_date, gp_end_date, gp_keyword, gp_included_rating)
 
 # Apply filters for App Store reviews
 filtered_app_store_reviews = filter_reviews(app_store_reviews_data, as_min_rating, as_start_date, as_end_date, as_keyword, as_included_rating)
