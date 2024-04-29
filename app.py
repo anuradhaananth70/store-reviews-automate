@@ -42,7 +42,7 @@ def fetch_app_store_reviews():
     a_df2['laguage_code'] = 'en'
     a_df2['country_code'] = 'us'
     a_df2.insert(loc=1, column='review_id', value=[uuid.uuid4() for _ in range(len(a_df2.index))])
-    a_df2.rename(columns={'review': 'review_description', 'userName': 'user_name', 'date': 'review_date',
+    a_df2.rename(columns={'review': 'review_description', 'userName': 'user_name', 'date': '_date',
                           'title': 'review_title', 'developerResponse': 'developer_response'}, inplace=True)
     a_df2 = a_df2.where(pd.notnull(a_df2), None)
     return a_df2
