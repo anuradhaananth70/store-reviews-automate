@@ -49,10 +49,15 @@ def fetch_apple_reviews():
     a_df2 = a_df2.where(pd.notnull(a_df2), None)
     return a_df2
 
-# Sidebar filters
-st.sidebar.header('Filters')
-min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
-keyword = st.sidebar.text_input('Keyword in Review Description', '')
+# Sidebar filters for Google Play Store reviews
+st.sidebar.header('Google Play Store Filters')
+gp_min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
+gp_keyword = st.sidebar.text_input('Keyword in Review Description', '')
+
+# Sidebar filters for App Store reviews
+st.sidebar.header('App Store Filters')
+as_min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
+as_keyword = st.sidebar.text_input('Keyword in Review Description', '')
 
 # Load reviews data
 reviews_data1 = fetch_google_reviews()
@@ -69,11 +74,8 @@ def filter_reviews(reviews_data, min_rating, keyword):
     return filtered_reviews
 
 # Apply filters
-filtered_reviews = filter_reviews(all_reviews_data, min_rating, keyword)
-
-# Separate the filtered reviews for Google Play Store and App Store
-filtered_reviews1 = filtered_reviews[filtered_reviews['source'] == 'Google Play']
-filtered_reviews2 = filtered_reviews[filtered_reviews['source'] == 'App Store']
+filtered_reviews1 = filter_reviews(reviews_data1, gp_min_rating, gp_keyword)
+filtered_reviews2 = filter_reviews(reviews_data2, as_min_rating, as_keyword)
 
 # Display filtered Google Play Store reviews
 st.write('Google Play Store Reviews:')
