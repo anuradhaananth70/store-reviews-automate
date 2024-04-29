@@ -51,13 +51,13 @@ def fetch_apple_reviews():
 
 # Sidebar filters for Google Play Store reviews
 st.sidebar.header('Google Play Store Filters')
-gp_min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
-gp_keyword = st.sidebar.text_input('Keyword in Review Description', '')
+gp_min_rating = st.sidebar.selectbox('Minimum Rating (Google Play Store)', [1, 2, 3, 4, 5], index=0, key='gp_min_rating')
+gp_keyword = st.sidebar.text_input('Keyword in Review Description (Google Play Store)', key='gp_keyword')
 
 # Sidebar filters for App Store reviews
 st.sidebar.header('App Store Filters')
-as_min_rating = int(st.sidebar.selectbox('Minimum Rating', [1, 2, 3, 4, 5], index=0))
-as_keyword = st.sidebar.text_input('Keyword in Review Description', '')
+as_min_rating = st.sidebar.selectbox('Minimum Rating (App Store)', [1, 2, 3, 4, 5], index=0, key='as_min_rating')
+as_keyword = st.sidebar.text_input('Keyword in Review Description (App Store)', key='as_keyword')
 
 # Load reviews data
 reviews_data1 = fetch_google_reviews()
